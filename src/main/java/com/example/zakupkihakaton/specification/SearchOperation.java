@@ -4,6 +4,9 @@ public enum SearchOperation {
     EQUALITY,
     NOT_EQUALITY,
 
+    EQUALITY_OR_GREATER_THAN,
+    EQUALITY_OR_LESS_THAN,
+
     GREATER_THAN,
     LESS_THAN,
 

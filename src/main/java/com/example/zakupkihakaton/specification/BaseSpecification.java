@@ -35,14 +35,18 @@ public abstract class BaseSpecification<T> implements Specification<T> {
                 return builder.greaterThan(root.get(criteria.getKey()), (Comparable) criteria.getValue());
             case LESS_THAN:
                 return builder.lessThan(root.get(criteria.getKey()), (Comparable) criteria.getValue());
+            case EQUALITY_OR_LESS_THAN:
+                return builder.lessThanOrEqualTo(root.get(criteria.getKey()), (Comparable) criteria.getValue());
+            case EQUALITY_OR_GREATER_THAN:
+                return builder.greaterThanOrEqualTo(root.get(criteria.getKey()), (Comparable) criteria.getValue());
             case LIKE:
-                return builder.like(root.get(criteria.getKey()), criteria.getValue().toString());
+                return builder.like(builder.upper(root.get(criteria.getKey())), criteria.getValue().toString().toUpperCase());
             case STARTS_WITH:
-                return builder.like(root.get(criteria.getKey()), criteria.getValue() + "%");
+                return builder.like(builder.upper(root.get(criteria.getKey())), criteria.getValue().toString().toUpperCase() + "%");
             case ENDS_WITH:
-                return builder.like(root.get(criteria.getKey()), "%" + criteria.getValue());
+                return builder.like(builder.upper(root.get(criteria.getKey())), "%" + criteria.getValue().toString().toUpperCase());
             case HAVE:
-                return builder.like(root.get(criteria.getKey()), "%" + criteria.getValue() + "%");
+                return builder.like(builder.upper(root.get(criteria.getKey())), "%" + criteria.getValue().toString().toUpperCase() + "%");
             case IN:
                 return root.get(criteria.getKey()).in(criteria.getValue());
             case ALL:

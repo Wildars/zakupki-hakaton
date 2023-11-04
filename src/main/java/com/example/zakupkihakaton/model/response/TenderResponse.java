@@ -8,6 +8,8 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,7 +18,13 @@ import javax.persistence.ManyToOne;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TenderResponse {
+    Long id;
+    String number;
+    String organization;
+    String type;
     String name;
-    Company company;
-    Organizations organizations;
+    BigDecimal sum;
+    LocalDateTime dateStart;
+    LocalDateTime dateEnd;
+    Boolean isStroi;
 }

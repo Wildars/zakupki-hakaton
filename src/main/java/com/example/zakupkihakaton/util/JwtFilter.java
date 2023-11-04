@@ -1,7 +1,7 @@
 package com.example.zakupkihakaton.util;
 
+import com.example.zakupkihakaton.exception.CustomError;
 import com.example.zakupkihakaton.exception.CustomException;
-import com.example.zakupkihakaton.exception.UserException;
 import com.example.zakupkihakaton.security.CustomUserDetails;
 import com.example.zakupkihakaton.security.CustomUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,37 +32,37 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse response, FilterChain filterChain) {
+
+
         String authorizationHeader = httpServletRequest.getHeader("Authorization");
 
         String token = null;
         String userName = null;
 
         try {
-            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer_")) {
-                token = authorizationHeader.substring(7);
-                userName = jwtUtil.extractUsername(token);
-            }
-
-            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-                CustomUserDetails userDetails = service.loadUser(userName);
-
-                if (jwtUtil.validateToken(token, userDetails)) {
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-                    usernamePasswordAuthenticationToken
-                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                }
-
-                if (userDetails.getUser().isDeleted()) {
-                    CustomException customException = new CustomException(UserException.USER_DELETED);
-                    log.error(customException.getReason(), customException);
-                    throw new RuntimeException(customException);
-                }
-            }
+//            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer_")) {
+//                token = authorizationHeader.substring(7);
+//                userName = jwtUtil.extractUsername(token);
+//            }
+//
+//            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//
+//                CustomUserDetails userDetails = service.loadUser(userName);
+//
+//                if (jwtUtil.validateToken(token, userDetails)) {
+//                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+//                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+//
+//                    usernamePasswordAuthenticationToken
+//                            .setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+//
+//                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+//                }
+//
+//                if (userDetails.getUser().isDeleted()) {
+//                    throw new CustomException(CustomError.ENTITY_DELETED, log);
+//                }
+//            }
 
             filterChain.doFilter(httpServletRequest, response);
 
