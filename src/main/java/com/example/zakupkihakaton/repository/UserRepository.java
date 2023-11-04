@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
     List<User> findByPIN(String pin);
 
-    UserElement findByTelegramId(String telegramId);
+    List<UserElement> findByTelegramId(String telegramId);
     Page<User> findByDeletedFalse(Pageable pageable);
 
     List<User> findByDeletedFalseAndRoleId(Short id);
