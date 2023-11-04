@@ -1,5 +1,6 @@
 package com.example.zakupkihakaton.bot;
-import com.example.zakupkihakaton.exception.MyTelegramApiException;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,9 +8,9 @@ import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
-import org.telegram.telegrambots.meta.generics.WebhookBot;
 
 @Configuration
+@Slf4j
 public class BotConfig {
 
     @Value("${telegram.bot.username}")
@@ -35,7 +36,7 @@ public class BotConfig {
         try {
             telegramBotsApi.registerBot(yourTelegramBot());
         } catch (TelegramApiRequestException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage(), e);
         }
         return telegramBotsApi;
     }

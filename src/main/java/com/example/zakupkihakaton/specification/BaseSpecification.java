@@ -15,6 +15,13 @@ public abstract class BaseSpecification<T> implements Specification<T> {
         this.criteria = criteria;
     }
 
+    protected BaseSpecification() {
+        super();
+        this.criteria = new SpecSearchCriteria(null, SearchOperation.ALL, null);
+    }
+
+    public abstract <L extends BaseSpecification<T>> L update(L specification);
+
     @Override
     public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         switch (criteria.getOperation()) {

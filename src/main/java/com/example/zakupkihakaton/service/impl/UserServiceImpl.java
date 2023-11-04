@@ -182,9 +182,9 @@ public class UserServiceImpl implements UserService {
         //contacting:role_region
         List<Role> roles = new ArrayList<>(roleRepository.findByPermissionsId((short) 23));
 
-        Specification<User> specification = Specification
-                .where(UserSpecification.findByRoleList(roles))
-                .and(UserSpecification.findByRegionId(regionId));
+        Specification<User> specification = new UserSpecification()
+                .findByRoleList(roles)
+                .findByRegionId(regionId);
 
         Page<User> users = userRepository.findAll(specification, PageRequest.of(page, size));
 
@@ -201,9 +201,9 @@ public class UserServiceImpl implements UserService {
 
         List<Role> roles = new ArrayList<>(roleRepository.findByPermissionsId((short) 24));
 
-        Specification<User> specification = Specification
-                .where(UserSpecification.findByRoleList(roles))
-                .and(UserSpecification.findByOZid(OZid));
+        Specification<User> specification = new UserSpecification()
+                .findByRoleList(roles)
+                .findByOZid(OZid);
 
         Page<User> users = userRepository.findAll(specification, PageRequest.of(page, size));
 
