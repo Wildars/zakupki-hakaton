@@ -4,8 +4,8 @@ import com.example.zakupkihakaton.convert.UserElement;
 import com.example.zakupkihakaton.convert.UserMapper;
 import com.example.zakupkihakaton.entity.Role;
 import com.example.zakupkihakaton.entity.User;
+import com.example.zakupkihakaton.exception.CustomError;
 import com.example.zakupkihakaton.exception.CustomException;
-import com.example.zakupkihakaton.exception.UserException;
 import com.example.zakupkihakaton.model.request.UserRequest;
 import com.example.zakupkihakaton.model.response.UserResponse;
 import com.example.zakupkihakaton.repository.RoleRepository;
@@ -44,9 +44,7 @@ public class UserServiceImpl implements UserService {
         User entity = userMapper.requestToEntity(request);
 
         if (entity.getPassword() == null) {
-            CustomException exception = new CustomException(UserException.PASSWORD_IS_NULL);
-            log.error(exception.getReason(), exception);
-            throw exception;
+            throw new CustomException(CustomError.PASSWORD_IS_NULL, log);
         }
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
@@ -58,24 +56,16 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserResponse update(UserRequest request, UUID id) {
         User entity = userRepository.findById(id)
-                .orElseThrow(() -> {
-                    CustomException exception = new CustomException(UserException.USER_NOT_FOUND);
-                    log.error(exception.getReason(), exception);
-                    throw exception;
-                });
+                .orElseThrow(() -> new CustomException(CustomError.ENTITY_NOT_FOUND, log));
 
         if (entity.isDeleted()) {
-            CustomException exception = new CustomException(UserException.USER_DELETED);
-            log.error(exception.getReason(), exception);
-            throw exception;
+            throw new CustomException(CustomError.ENTITY_DELETED, log);
         }
 
         userMapper.update(entity, request);
 
         if (entity.getPassword() == null) {
-            CustomException exception = new CustomException(UserException.PASSWORD_IS_NULL);
-            log.error(exception.getReason(), exception);
-            throw exception;
+            throw new CustomException(CustomError.PASSWORD_IS_NULL, log);
         }
 
         if (request.getPassword() != null)
@@ -88,18 +78,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse findById(UUID id) {
         User entity = userRepository.findById(id)
-                .orElseThrow(() -> {
-                    CustomException exception = new CustomException(UserException.USER_NOT_FOUND);
-                    log.error(exception.getReason(), exception);
-                    throw exception;
-                });
+                .orElseThrow(() -> new CustomException(CustomError.ENTITY_NOT_FOUND, log));
 
         if (entity.isDeleted()) {
-            CustomException exception = new CustomException(UserException.USER_DELETED);
-            log.error(exception.getReason(), exception);
-            throw exception;
+            throw new CustomException(CustomError.ENTITY_DELETED, log);
         }
-
 
         User savedEntity = userRepository.save(entity);
         return userMapper.entityToResponse(savedEntity);
@@ -214,11 +197,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(UUID id) {
         User entity = userRepository.findById(id)
-                .orElseThrow(() -> {
-                    CustomException exception = new CustomException(UserException.USER_NOT_FOUND);
-                    log.error(exception.getReason(), exception);
-                    throw exception;
-                });
+                .orElseThrow(() -> new CustomException(CustomError.ENTITY_NOT_FOUND, log));
 
         entity.setDeleted(true);
 
@@ -228,11 +207,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void restore(UUID id) {
         User entity = userRepository.findById(id)
-                .orElseThrow(() -> {
-                    CustomException exception = new CustomException(UserException.USER_NOT_FOUND);
-                    log.error(exception.getReason(), exception);
-                    throw exception;
-                });
+                .orElseThrow(() -> new CustomException(CustomError.ENTITY_NOT_FOUND, log));
 
         entity.setDeleted(false);
 

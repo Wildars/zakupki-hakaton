@@ -3,7 +3,7 @@ package com.example.zakupkihakaton.service.impl;
 
 import com.example.zakupkihakaton.convert.UserMapper;
 import com.example.zakupkihakaton.entity.User;
-import com.example.zakupkihakaton.exception.ApplicationException;
+import com.example.zakupkihakaton.exception.CustomError;
 import com.example.zakupkihakaton.exception.CustomException;
 import com.example.zakupkihakaton.model.request.AuthenticationRequest;
 import com.example.zakupkihakaton.model.response.AuthenticationResponse;
@@ -40,9 +40,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         List<User> users = userRepository.findByPIN(authRequest.getPin());
 
         if (users.isEmpty()) {
-            CustomException exception = new CustomException(ApplicationException.AUTHENTICATION_FAILED);
-            log.error(exception.getReason(), exception);
-            throw exception;
+            throw new CustomException(CustomError.AUTHENTICATION_FAILED, log);
         }
 
         String jwt = null;
@@ -64,9 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         if (!find) {
-            CustomException exception = new CustomException(ApplicationException.AUTHENTICATION_FAILED);
-            log.error(exception.getReason(), exception);
-            throw exception;
+            throw new CustomException(CustomError.AUTHENTICATION_FAILED, log);
         }
 
         return new AuthenticationResponse(authResponse, jwt);
