@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TenderRepository extends JpaRepository<Tender,Long> {
+    boolean existsByNumber(String number);
 }

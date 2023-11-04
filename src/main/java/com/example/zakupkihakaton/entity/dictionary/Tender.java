@@ -1,11 +1,12 @@
 package com.example.zakupkihakaton.entity.dictionary;
 
 import com.example.zakupkihakaton.entity.Audit;
-import com.example.zakupkihakaton.entity.Organizations;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -18,14 +19,12 @@ public class Tender extends Audit<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    String number;
+    String organization;
+    String type;
     String name;
-    String description;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
-    Company company;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
-    Organizations organizations;
-
+    BigDecimal sum;
+    LocalDateTime dateStart;
+    LocalDateTime dateEnd;
+    Boolean isStroi;
 }
