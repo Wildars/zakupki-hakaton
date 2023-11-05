@@ -37,34 +37,35 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional(readOnly = true)
     public AuthenticationResponse generateToken(AuthenticationRequest authRequest, HttpServletResponse response) {
-        List<User> users = userRepository.findByPIN(authRequest.getPin());
-
-        if (users.isEmpty()) {
-            throw new CustomException(CustomError.AUTHENTICATION_FAILED, log);
-        }
-
-        String jwt = null;
-        UserAuthResponse authResponse = null;
-        boolean find = false;
-
-        for (User user : users) {
-            try {
-                var result = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), authRequest.getPassword()));
-                jwt = jwtUtil.generateToken(user.getId());
-                authResponse = userMapper.entityToAuthResponse(user);
-
-                if (result != null) {
-                    find = true;
-                    break;
-                }
-            } catch (AuthenticationException ignored) {
-            }
-        }
-
-        if (!find) {
-            throw new CustomException(CustomError.AUTHENTICATION_FAILED, log);
-        }
-
-        return new AuthenticationResponse(authResponse, jwt);
+//        List<User> users = userRepository.findByPIN(authRequest.getPin());
+//
+//        if (users.isEmpty()) {
+//            throw new CustomException(CustomError.AUTHENTICATION_FAILED, log);
+//        }
+//
+//        String jwt = null;
+//        UserAuthResponse authResponse = null;
+//        boolean find = false;
+//
+//        for (User user : users) {
+//            try {
+//                var result = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), authRequest.getPassword()));
+//                jwt = jwtUtil.generateToken(user.getId());
+//                authResponse = userMapper.entityToAuthResponse(user);
+//
+//                if (result != null) {
+//                    find = true;
+//                    break;
+//                }
+//            } catch (AuthenticationException ignored) {
+//            }
+//        }
+//
+//        if (!find) {
+//            throw new CustomException(CustomError.AUTHENTICATION_FAILED, log);
+//        }
+//
+//        return new AuthenticationResponse(authResponse, jwt);
+        return null;
     }
 }

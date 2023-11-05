@@ -11,12 +11,11 @@ public class CustomAudit implements AuditorAware<String> {
     @Override
     public Optional<String> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null)
+        if (authentication == null || authentication.getPrincipal() instanceof String) {
             return Optional.of("back");
-        else if (authentication.getPrincipal() == null || authentication.getPrincipal().equals(""))
-            return Optional.of("back");
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return Optional.ofNullable(userDetails.getUsername());
+        } else {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            return Optional.ofNullable(userDetails.getUsername());
+        }
     }
 }

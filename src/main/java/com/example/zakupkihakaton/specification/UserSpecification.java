@@ -1,6 +1,6 @@
 package com.example.zakupkihakaton.specification;
 
-import com.example.zakupkihakaton.entity.Role;
+//import com.example.zakupkihakaton.entity.Role;
 import com.example.zakupkihakaton.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -48,15 +48,15 @@ public class UserSpecification extends BaseSpecification<User> {
         return result.toPredicate(root, query, builder);
     }
 
-    public UserSpecification findByRoleList(List<Role> roles) {
-        if (roles == null)
-            return update(new UserSpecification());
-        if (roles.isEmpty())
-            return update(new UserSpecification());
-
-        String key = "role";
-        return update(new UserSpecification(new SpecSearchCriteria(key, SearchOperation.IN, roles)));
-    }
+//    public UserSpecification findByRoleList(List<Role> roles) {
+//        if (roles == null)
+//            return update(new UserSpecification());
+//        if (roles.isEmpty())
+//            return update(new UserSpecification());
+//
+//        String key = "role";
+//        return update(new UserSpecification(new SpecSearchCriteria(key, SearchOperation.IN, roles)));
+//    }
 
     public UserSpecification findByOZid(Long OZid) {
         if (OZid == null)

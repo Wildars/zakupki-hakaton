@@ -3,6 +3,8 @@ package com.example.zakupkihakaton.model.request;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -10,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
+    List<Long> tenderId;
     String PIN;
     String OZName;
     String firstName;
@@ -18,8 +21,7 @@ public class UserRequest {
     String password;
     String phone;
     String jobName;
-    Short roleId;
-    Short informationSystemId;
-    Short regionId;
-    Long organizationId;
+    String roleId;
+    String regionId;
+    String organizationId;
 }

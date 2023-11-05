@@ -1,11 +1,13 @@
 package com.example.zakupkihakaton.entity;
 
 
+import com.example.zakupkihakaton.entity.dictionary.Tender;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,29 +24,29 @@ public class User extends Audit<String> {
     @GeneratedValue
     UUID id;
     String PIN;
+    String password;
     String firstName;
     String lastName;
     String patronymic;
-    String password;
     String phone;
     @Column(name = "OZ_name")
     String OZName;
     String jobName;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn
-    Role role;
 
     String telegramId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    Region region;
 
     String username;
+    String role;
+    String region;
+    String organization;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    Organizations organization;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_tender",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "tender_id"))
+    List<Tender> tenders;
 
     public boolean isDeleted() {
         return this.getDeleted();

@@ -1,7 +1,6 @@
 package com.example.zakupkihakaton.model.request;
 
-import com.example.zakupkihakaton.entity.Organizations;
-import com.example.zakupkihakaton.entity.dictionary.Company;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

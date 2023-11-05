@@ -1,10 +1,11 @@
 package com.example.zakupkihakaton.convert;
 
 
-import com.example.zakupkihakaton.entity.Organizations;
-import com.example.zakupkihakaton.entity.Region;
-import com.example.zakupkihakaton.entity.Role;
+//import com.example.zakupkihakaton.entity.Organizations;
+//import com.example.zakupkihakaton.entity.Region;
+//import com.example.zakupkihakaton.entity.Role;
 import com.example.zakupkihakaton.entity.User;
+import com.example.zakupkihakaton.entity.dictionary.Tender;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -19,13 +20,16 @@ import java.util.UUID;
 public interface DefaultMapper {
 
 
-    @Named("setOrganizations")
-    default Organizations setOrganizations(Long id) {
-        if (id == null)
-            return null;
 
-        return Organizations.builder().id(id).build();
-    }
+
+
+//    @Named("setOrganizations")
+//    default Organizations setOrganizations(Long id) {
+//        if (id == null)
+//            return null;
+//
+//        return Organizations.builder().id(id).build();
+//    }
 
     @Named("setUser")
     default User setUser(UUID source) {
@@ -35,20 +39,20 @@ public interface DefaultMapper {
         return User.builder().id(source).build();
     }
 
-    @Named("setRegion")
-    default Region toRegion(Short id) {
-        if (id == null) {
-            return null;
-        }
-        return Region.builder().id(id).build();
-    }
+//    @Named("setRegion")
+//    default Region toRegion(Short id) {
+//        if (id == null) {
+//            return null;
+//        }
+//        return Region.builder().id(id).build();
+//    }
 
-    @Named("setRole")
-    default Role setRole(Short id) {
-        if (id == null)
-            return null;
-        return Role.builder().id(id).build();
-    }
+//    @Named("setRole")
+//    default Role setRole(Short id) {
+//        if (id == null)
+//            return null;
+//        return Role.builder().id(id).build();
+//    }
 
 //    @Named("getDevelopers")
 //    default List<UserElement> getDevelopers(List<User> users) {

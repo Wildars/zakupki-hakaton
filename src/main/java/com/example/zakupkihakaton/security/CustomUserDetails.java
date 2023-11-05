@@ -1,6 +1,6 @@
 package com.example.zakupkihakaton.security;
 
-import com.example.zakupkihakaton.entity.Role;
+
 import com.example.zakupkihakaton.entity.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,12 +24,13 @@ public class CustomUserDetails implements UserDetails {
     }
 
     private List<? extends GrantedAuthority> fromUser(User user) {
-        Role role = user.getRole();
-        List<GrantedAuthority> authorities = role.getPermissions()
-                .stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                .collect(Collectors.toList());
-        return authorities;
+//        Role role = user.getRole();
+//        List<GrantedAuthority> authorities = role.getPermissions()
+//                .stream()
+//                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+//                .collect(Collectors.toList());
+//        return authorities;
+        return null;
     }
 
 

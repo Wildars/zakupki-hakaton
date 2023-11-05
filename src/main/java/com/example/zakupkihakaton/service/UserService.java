@@ -18,27 +18,27 @@ public interface UserService {
 
     Page<UserResponse> findAll(int page, int size);
 
-    List<UserElement> findManagers();
+//    List<UserElement> findManagers();
 
 //    List<UserElement>findByTelegramId(String telegramId);
 
-    List<UserElement> findForEvent();
+//    List<UserElement> findForEvent();
+//
+//    List<UserElement> findDevelopers();
 
-    List<UserElement> findDevelopers();
-
-    @Transactional(readOnly = true)
-    Page<UserResponse> findRegion(
-            Short regionId,
-            int page,
-            int size
-    );
-
-    @Transactional(readOnly = true)
-    Page<UserResponse> findOZ(
-            Long OZid,
-            int page,
-            int size
-    );
+//    @Transactional(readOnly = true)
+//    Page<UserResponse> findRegion(
+//            Short regionId,
+//            int page,
+//            int size
+//    );
+//
+//    @Transactional(readOnly = true)
+//    Page<UserResponse> findOZ(
+//            Long OZid,
+//            int page,
+//            int size
+//    );
 
     void delete(UUID id);
 

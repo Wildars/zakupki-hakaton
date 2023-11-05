@@ -13,12 +13,16 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
-    List<User> findByPIN(String pin);
+    User findByPIN(String pin);
+//    User findByPin(String pin);
+
+    // Метод для проверки пароля
+    User findByPassword(String password);
 
     List<UserElement> findByTelegramId(String telegramId);
     Page<User> findByDeletedFalse(Pageable pageable);
 
-    List<User> findByDeletedFalseAndRoleId(Short id);
+//    List<User> findByDeletedFalseAndRoleId(Short id);
 
-    Boolean existsByRoleId(Short id);
+//    Boolean existsByRoleId(Short id);
 }

@@ -47,23 +47,23 @@ public class UserController {
         return userService.findAll(page, size);
     }
 
-    @GetMapping("/managers")
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserElement> findManagers() {
-        return userService.findManagers();
-    }
-
-    @GetMapping("/developer")
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserElement> findDevelopers() {
-        return userService.findDevelopers();
-    }
-
-    @GetMapping("/event")
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserElement> findForEvent() {
-        return userService.findForEvent();
-    }
+//    @GetMapping("/managers")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<UserElement> findManagers() {
+//        return userService.findManagers();
+//    }
+//
+//    @GetMapping("/developer")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<UserElement> findDevelopers() {
+//        return userService.findDevelopers();
+//    }
+//
+//    @GetMapping("/event")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<UserElement> findForEvent() {
+//        return userService.findForEvent();
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
@@ -77,29 +77,29 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/find/region")
-    public Page<UserResponse> findRegion(
-            @RequestParam(required = false) Short regionId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "25") int size
-    ) {
-        return userService.findRegion(
-                regionId,
-                page,
-                size
-        );
-    }
-
-    @GetMapping("/find/oz")
-    public Page<UserResponse> findOZ(
-            @RequestParam(required = false) Long OZid,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "25") int size
-    ) {
-        return userService.findOZ(
-                OZid,
-                page,
-                size
-        );
-    }
+//    @GetMapping("/find/region")
+//    public Page<UserResponse> findRegion(
+//            @RequestParam(required = false) Short regionId,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "25") int size
+//    ) {
+//        return userService.findRegion(
+//                regionId,
+//                page,
+//                size
+//        );
+//    }
+//
+//    @GetMapping("/find/oz")
+//    public Page<UserResponse> findOZ(
+//            @RequestParam(required = false) Long OZid,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "25") int size
+//    ) {
+//        return userService.findOZ(
+//                OZid,
+//                page,
+//                size
+//        );
+//    }
 }

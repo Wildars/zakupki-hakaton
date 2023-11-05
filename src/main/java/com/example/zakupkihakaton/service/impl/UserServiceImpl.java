@@ -2,13 +2,13 @@ package com.example.zakupkihakaton.service.impl;
 
 import com.example.zakupkihakaton.convert.UserElement;
 import com.example.zakupkihakaton.convert.UserMapper;
-import com.example.zakupkihakaton.entity.Role;
+//import com.example.zakupkihakaton.entity.Role;
 import com.example.zakupkihakaton.entity.User;
 import com.example.zakupkihakaton.exception.CustomError;
 import com.example.zakupkihakaton.exception.CustomException;
 import com.example.zakupkihakaton.model.request.UserRequest;
 import com.example.zakupkihakaton.model.response.UserResponse;
-import com.example.zakupkihakaton.repository.RoleRepository;
+//import com.example.zakupkihakaton.repository.RoleRepository;
 import com.example.zakupkihakaton.repository.UserRepository;
 import com.example.zakupkihakaton.service.UserService;
 import com.example.zakupkihakaton.specification.UserSpecification;
@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     UserMapper userMapper;
     UserRepository userRepository;
-    RoleRepository roleRepository;
+//    RoleRepository roleRepository;
     PasswordEncoder passwordEncoder;
 
     @Override
@@ -95,20 +95,20 @@ public class UserServiceImpl implements UserService {
         return entityPage.map(userMapper::entityToResponse);
     }
 
-    @Override
-    public List<UserElement> findManagers() {
-        //retraining:accept
-        List<Role> roles = roleRepository.findByPermissionsId((short) 14);
-        HashSet<User> managers = new HashSet<>();
-
-        for (Role i : roles) {
-            managers.addAll(userRepository.findByDeletedFalseAndRoleId(i.getId()));
-        }
-
-        return managers.stream()
-                .map(userMapper::entityToElement)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<UserElement> findManagers() {
+//        //retraining:accept
+//        List<Role> roles = roleRepository.findByPermissionsId((short) 14);
+//        HashSet<User> managers = new HashSet<>();
+//
+//        for (Role i : roles) {
+//            managers.addAll(userRepository.findByDeletedFalseAndRoleId(i.getId()));
+//        }
+//
+//        return managers.stream()
+//                .map(userMapper::entityToElement)
+//                .collect(Collectors.toList());
+//    }
 
 
 
@@ -125,73 +125,73 @@ public class UserServiceImpl implements UserService {
 //                .collect(Collectors.toList());
 //    }
 
-    @Override
-    public List<UserElement> findForEvent() {
-        List<Role> roles = roleRepository.findByPermissionsId((short) 31);
-        HashSet<User> managers = new HashSet<>();
+//    @Override
+//    public List<UserElement> findForEvent() {
+//        List<Role> roles = roleRepository.findByPermissionsId((short) 31);
+//        HashSet<User> managers = new HashSet<>();
+//
+//        for (Role i : roles) {
+//            managers.addAll(userRepository.findByDeletedFalseAndRoleId(i.getId()));
+//        }
+//
+//        return managers.stream()
+//                .map(userMapper::entityToElement)
+//                .collect(Collectors.toList());
+//    }
 
-        for (Role i : roles) {
-            managers.addAll(userRepository.findByDeletedFalseAndRoleId(i.getId()));
-        }
-
-        return managers.stream()
-                .map(userMapper::entityToElement)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<UserElement> findDevelopers() {
-        //contacting:do_task
-        List<Role> roles = roleRepository.findByPermissionsId((short) 12);
-        HashSet<User> managers = new HashSet<>();
-
-        for (Role i : roles) {
-            managers.addAll(userRepository.findByDeletedFalseAndRoleId(i.getId()));
-        }
-
-        return managers.stream()
-                .map(userMapper::entityToElement)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<UserResponse> findRegion(
-            Short regionId,
-            int page,
-            int size
-    ) {
-
-        //contacting:role_region
-        List<Role> roles = new ArrayList<>(roleRepository.findByPermissionsId((short) 23));
-
-        Specification<User> specification = new UserSpecification()
-                .findByRoleList(roles)
-                .findByRegionId(regionId);
-
-        Page<User> users = userRepository.findAll(specification, PageRequest.of(page, size));
-
-        return users.map(userMapper::entityToResponse);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Page<UserResponse> findOZ(
-            Long OZid,
-            int page,
-            int size
-    ) {
-
-        List<Role> roles = new ArrayList<>(roleRepository.findByPermissionsId((short) 24));
-
-        Specification<User> specification = new UserSpecification()
-                .findByRoleList(roles)
-                .findByOZid(OZid);
-
-        Page<User> users = userRepository.findAll(specification, PageRequest.of(page, size));
-
-        return users.map(userMapper::entityToResponse);
-    }
+//    @Override
+//    public List<UserElement> findDevelopers() {
+//        //contacting:do_task
+//        List<Role> roles = roleRepository.findByPermissionsId((short) 12);
+//        HashSet<User> managers = new HashSet<>();
+//
+//        for (Role i : roles) {
+//            managers.addAll(userRepository.findByDeletedFalseAndRoleId(i.getId()));
+//        }
+//
+//        return managers.stream()
+//                .map(userMapper::entityToElement)
+//                .collect(Collectors.toList());
+//    }
+//
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Page<UserResponse> findRegion(
+//            Short regionId,
+//            int page,
+//            int size
+//    ) {
+//
+//        //contacting:role_region
+//        List<Role> roles = new ArrayList<>(roleRepository.findByPermissionsId((short) 23));
+//
+//        Specification<User> specification = new UserSpecification()
+//                .findByRoleList(roles)
+//                .findByRegionId(regionId);
+//
+//        Page<User> users = userRepository.findAll(specification, PageRequest.of(page, size));
+//
+//        return users.map(userMapper::entityToResponse);
+//    }
+//
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Page<UserResponse> findOZ(
+//            Long OZid,
+//            int page,
+//            int size
+//    ) {
+//
+//        List<Role> roles = new ArrayList<>(roleRepository.findByPermissionsId((short) 24));
+//
+//        Specification<User> specification = new UserSpecification()
+//                .findByRoleList(roles)
+//                .findByOZid(OZid);
+//
+//        Page<User> users = userRepository.findAll(specification, PageRequest.of(page, size));
+//
+//        return users.map(userMapper::entityToResponse);
+//    }
 
 
     @Override

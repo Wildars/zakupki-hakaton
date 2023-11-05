@@ -22,7 +22,7 @@ public class UserAuthResponse {
     String phone;
     String OZName;
     String jobName;
-    RoleElement role;
-    List<String> permissions;
+    String role;
+    String permissions;
 
 }

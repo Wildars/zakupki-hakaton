@@ -1,5 +1,10 @@
 package com.example.zakupkihakaton.bot;
 
+import com.example.zakupkihakaton.convert.UserElement;
+import com.example.zakupkihakaton.entity.User;
+import com.example.zakupkihakaton.entity.dictionary.Tender;
+import com.example.zakupkihakaton.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -11,12 +16,18 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class YourTelegramBot extends TelegramLongPollingBot {
 
     final BotConfig botConfig;
+    @Autowired
+    UserRepository userRepository;
+
+    private Map<Long, AuthenticationState> userStates = new HashMap<>(); //
 
     public YourTelegramBot(BotConfig botConfig) {
         this.botConfig = botConfig;
@@ -32,15 +43,36 @@ public class YourTelegramBot extends TelegramLongPollingBot {
         return botConfig.getBotToken();
     }
 
+    @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()){
+        if (update.hasMessage() && update.getMessage().hasText()) {
             String messageText = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
 
             if (messageText.equals("/start")) {
                 sendStartMenu(chatId);
             } else if (messageText.equals("Войти")) {
-                sendLoginPrompt(chatId);
+                startAuthentication(chatId);
+            } else if (userStates.containsKey(chatId) && userStates.get(chatId) == AuthenticationState.WAITING_PIN) {
+                // Пользователь в режиме ввода пин-кода
+                String pin = messageText;
+                if (checkPin(chatId, pin)) {
+                    sendMessage(chatId, "Пин-код верен. Теперь введите пароль:");
+                    userStates.put(chatId, AuthenticationState.WAITING_PASSWORD);
+                } else {
+                    sendMessage(chatId, "Пин-код неверен. Попробуйте еще раз или нажмите /start.");
+                    userStates.remove(chatId);
+                }
+            } else if (userStates.containsKey(chatId) && userStates.get(chatId) == AuthenticationState.WAITING_PASSWORD) {
+                // Пользователь в режиме ввода пароля
+                String password = messageText;
+                if (checkPassword(chatId, password)) {
+                    sendMessage(chatId, "Пароль верен. Вы успешно вошли.");
+                    userStates.remove(chatId);
+                } else {
+                    sendMessage(chatId, "Пароль неверен. Попробуйте еще раз или нажмите /start.");
+                    userStates.remove(chatId);
+                }
             } else if (messageText.equals("Зарегистрироваться")) {
                 sendRegistrationLink(chatId);
             } else if (messageText.equals("Помощь")) {
@@ -61,6 +93,62 @@ public class YourTelegramBot extends TelegramLongPollingBot {
                 sendMessage(chatId, "Извините, я не понял ваш запрос.");
             }
         }
+    }
+
+
+
+    private void startAuthentication(Long chatId) {
+        sendMessage(chatId, "Введите пин-код:");
+        userStates.put(chatId, AuthenticationState.WAITING_PIN);
+    }
+
+    private boolean checkPin(Long chatId, String pin) {
+        User user = userRepository.findByPIN(pin);
+        return user != null;
+    }
+
+    private boolean checkPassword(Long chatId, String password) {
+        User user = userRepository.findByPassword(password);
+        if (user != null) {
+            sendUserInfo(chatId, user);
+            return true;
+        } else {
+            sendMessage(chatId, "Пароль неверен. Попробуйте еще раз или нажмите /start.");
+            userStates.remove(chatId);
+            return false;
+        }
+    }
+
+    private void sendUserInfo(Long chatId, User user) {
+        String userInfo = "Имя: " + user.getFirstName() + "\n" +
+                "Фамилия: " + user.getLastName() + "\n" +
+                "Отчество: " + user.getPatronymic() + "\n" +
+                "Телефон: " + user.getPhone() + "\n" +
+                "OZName: " + user.getOZName() + "\n" +
+                "Должность: " + user.getJobName() + "\n" +
+                "Роль: " + user.getRole() + "\n" +
+                "Telegram ID: " + user.getTelegramId() + "\n" +
+                "Регион: " + user.getRegion() + "\n" +
+                "Имя пользователя: " + user.getUsername() + "\n" +
+                "Организация: " + user.getOrganization();
+
+        StringBuilder tenderInfo = new StringBuilder("Тендеры, в которых вы участвуете:\n");
+        List<Tender> tenders = user.getTenders();
+        if (tenders != null && !tenders.isEmpty()) {
+            for (Tender tender : tenders) {
+                tenderInfo.append("- ").append(tender.getName()).append("\n");
+            }
+        } else {
+            tenderInfo.append("Вы не участвуете ни в одном тендере.");
+        }
+
+        sendMessage(chatId, "Информация о вас:\n" + userInfo + "\n\n" + tenderInfo.toString());
+    }
+
+
+    private enum AuthenticationState {
+        WAITING_PIN, // Ожидание ввода пин-кода
+        WAITING_PASSWORD // Ожидание ввода пароля
     }
 
     private void sendStartMenu(Long chatId) {
@@ -85,12 +173,12 @@ public class YourTelegramBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-    private void sendLoginPrompt(Long chatId) {
-        // Здесь вы можете реализовать логику для ввода логина и пароля
-        // и взятия данных из вашей базы данных.
-        // Пример:
-        sendMessage(chatId, "Введите логин:");
-    }
+//    private void sendLoginPrompt(Long chatId) {
+//        // Здесь вы можете реализовать логику для ввода логина и пароля
+//        // и взятия данных из вашей базы данных.
+//        // Пример:
+//        sendMessage(chatId, "Введите логин:");
+//    }
 
     private void sendRegistrationLink(Long chatId) {
         SendMessage message = new SendMessage();
